@@ -1,0 +1,49 @@
+Thread_1 {
+	x=0;
+	bool[] flag = new bool[2];
+	int turn;
+	
+	run() {
+		flag [0] = True; //tells the Thread to have an intension to access the critical point
+		turn = 0; //whichever comes first, then one will be locked and the other will be executed
+		
+		while (flag[1] && turn == 0) {
+			//do nothing
+		}
+	}
+	
+	//critical point
+	x = x + 1;
+	print(x);
+	
+	//parallel execution
+	flag[0] = False;
+}
+
+
+Thread_2 {
+
+	run() {
+		flag[1] = True;
+		turn = 1;
+		
+		while(flag[0] && turn == 1){
+			//do nothing
+		}
+		
+		//critical point
+		x =  x + 1;
+		print(x);
+		
+		//parallel execution
+		flag[1] = False;
+	}
+}
+
+Three Criterias
+1. Mutual Exclusion - only one thread should access the critical section
+	- the variable turn preserves mutual exclusion
+2. Progress
+	- the flag value determines intention to access the critical section 
+3. Bounded Waiting
+	- Thread_1 or Thread_2 will enter the critical section after one entry by the other thread. 
